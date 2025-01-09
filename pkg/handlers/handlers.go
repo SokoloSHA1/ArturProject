@@ -9,11 +9,8 @@ type Handler struct {
 	service *services.Service
 }
 
-//	func NewHandler(services *services.Service) *Handler{
-//		return &Handler{service: services}
-//	}
-func NewHandler() *Handler {
-	return &Handler{}
+func NewHandler(services *services.Service) *Handler {
+	return &Handler{service: services}
 }
 
 func (h *Handler) InitRoutes() *gin.Engine {
