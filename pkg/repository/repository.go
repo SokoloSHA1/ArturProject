@@ -1,9 +1,14 @@
 package repository
 
-import arturproject "github.com/SokoloSHA/ArturProject"
+import (
+	arturproject "github.com/SokoloSHA/ArturProject"
+	"github.com/jmoiron/sqlx"
+)
 
 type TodoUser interface {
 	CreateUser(user arturproject.User) error
+	GetUser(id string) (arturproject.User, error)
+	DeleteUser(id string) error
 }
 
 type TodoCategory interface {
@@ -18,9 +23,8 @@ type Repository struct {
 	TodoItem
 }
 
-// func NewRepository(db *sqlx.DB) *Repository
-func NewRepository() *Repository {
+func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
-		TodoUser: NewAuthServerSql(),
+		TodoUser: NewAuthServerSql(db),
 	}
 }

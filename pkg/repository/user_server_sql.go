@@ -11,26 +11,29 @@ type AuthServerSql struct {
 	db *sqlx.DB
 }
 
-// func NewAuthServerSql(db *sqlx.DB) *AuthServerSql {
-// 	return &AuthServerSql{db: db}
-// }
-
-func NewAuthServerSql() *AuthServerSql {
-	return &AuthServerSql{}
+func NewAuthServerSql(db *sqlx.DB) *AuthServerSql {
+	return &AuthServerSql{db: db}
 }
 
 func (r *AuthServerSql) CreateUser(user arturproject.User) error {
-	query := fmt.Sprintf("INSERT INTO %s (Id, DeviceId, Locale, AppVersion, CreatedAt, LastSeen) values ($1, $2, $3, $4, $5, $6)", usersTable)
-
-	_, err := r.db.Exec(query, user.Id, user.DeviceId, user.Locale, user.AppVersion, user.CreatedAt, user.LastSeen)
+	query := fmt.Sprintf("INSERT INTO \"%s\" (Id, DevicedID, Locale, CreatedAt, LastSeen, UpVersion) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')",
+		usersTable, user.Id, user.DeviceId, user.Locale, user.CreatedAt, user.LastSeen, user.AppVersion)
+	fmt.Println(query)
+	_, err := r.db.Exec(query)
 
 	return err
 }
 
 func (r *AuthServerSql) GetUser(id string) (arturproject.User, error) {
-	query := fmt.Sprintf("INSERT INTO %s (Id, DeviceId, Locale, AppVersion, CreatedAt, LastSeen) values ($1, $2, $3, $4, $5, $6)", usersTable)
+	var user arturproject.User
+	query := fmt.Sprintf("SELECT * FROM \"%s\" WHERE Id='%s'", usersTable, id)
+	err := r.db.Get(&user, query)
+	return user, err
+}
 
-	row := r.db.QueryRow(query, user.Id, user.DeviceId, user.Locale, user.AppVersion, user.CreatedAt, user.LastSeen)
+func (r *AuthServerSql) DeleteUser(id string) error {
+	query := fmt.Sprintf("DELETE FROM \"%s\" WHERE Id = '%s'", usersTable, id)
+	_, err := r.db.Exec(query)
 
 	return err
 }

@@ -26,17 +26,22 @@ func (h *Handler) createUser(c *gin.Context) {
 }
 
 func (h *Handler) deleteUser(c *gin.Context) {
+	id := c.Param("userId")
+	err := h.service.TodoUser.DeleteUser(id)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
 
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"Status": "ok",
+	})
 }
 
 func (h *Handler) getUser(c *gin.Context) {
-	var input arturproject.User
+	id := c.Query("userId")
 
-	if err := c.BindJSON(&input); err != nil {
-		newErrorResponse(c, http.StatusBadRequest, "invalid input body")
-	}
-
-	user, err := h.service.TodoUser.getUser(input.Id)
+	user, err := h.service.TodoUser.GetUser(id)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return

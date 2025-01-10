@@ -1,1 +1,6 @@
-port: "1433"
+port: "8000"
+
+db:
+ server: ".\\SQLEXPRESS"
+ port: "1433"
+ dbname: "ArturDB"

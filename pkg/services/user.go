@@ -20,3 +20,7 @@ func (s *AuthService) CreateUser(user arturproject.User) error {
 func (s *AuthService) GetUser(id string) (arturproject.User, error) {
 	return s.repo.GetUser(id)
 }
+
+func (s *AuthService) DeleteUser(id string) error {
+	return s.repo.DeleteUser(id)
+}

@@ -16,11 +16,20 @@ func main() {
 		logrus.Fatalf("error initializing configs: %s", err.Error())
 	}
 
-	srv := new(arturproject.Server)
+	db, err := repository.NewSQLServerDB(repository.Config{
+		Server: viper.GetString("db.server"),
+		Port:   viper.GetString("db.port"),
+		DBName: viper.GetString("db.dbname"),
+	})
+	if err != nil {
+		logrus.Fatalf("failed to initialize db: %s", err.Error())
+	}
 
-	repos := repository.NewRepository()
+	repos := repository.NewRepository(db)
 	service := services.NewService(repos)
 	handlers := handlers.NewHandler(service)
+
+	srv := new(arturproject.Server)
 
 	if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
 		logrus.Fatalf("error occured while running http server: %s", err.Error())

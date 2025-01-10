@@ -7,6 +7,8 @@ import (
 
 type TodoUser interface {
 	CreateUser(user arturproject.User) error
+	GetUser(id string) (arturproject.User, error)
+	DeleteUser(id string) error
 }
 
 type TodoCategory interface {
