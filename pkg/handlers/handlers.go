@@ -21,7 +21,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		v1 := api.Group("/v1")
 		{
 			v1.GET("/data", h.getUser)
-			// v1.POST("/sync")
+			v1.POST("/sync", h.postUser)
 
 			user := v1.Group("/user")
 			{

@@ -51,3 +51,41 @@ func (h *Handler) getUser(c *gin.Context) {
 		"user": user,
 	})
 }
+
+func (h *Handler) postUser(c *gin.Context) {
+	var input arturproject.Params
+
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "invalid input body")
+	}
+
+	err := h.service.TodoCategory.UpdateCategories(input.UpdateCategories)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	err = h.service.TodoCategory.DeleteCategories(input.DeleteCategories)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	err = h.service.TodoItem.DeleteItems(input.DeleteItems)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	err = h.service.TodoTag.DeleteTags(input.DeleteTags)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	// err = h.service.TodoItemTag.DeleteItemTags(input.DeleteItemTags)
+	// if err != nil {
+	// 	newErrorResponse(c, http.StatusInternalServerError, err.Error())
+	// 	return
+	// }
+}

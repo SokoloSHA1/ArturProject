@@ -6,16 +6,16 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-type ItemServerSql struct {
+type TagServerSql struct {
 	db *sqlx.DB
 }
 
-func NewItemServerSql(db *sqlx.DB) *ItemServerSql {
-	return &ItemServerSql{db: db}
+func NewTagServerSql(db *sqlx.DB) *TagServerSql {
+	return &TagServerSql{db: db}
 }
 
-func (r *ItemServerSql) DeleteItems(items []string) error {
-	for _, id := range items {
+func (r *TagServerSql) DeleteTags(tags []string) error {
+	for _, id := range tags {
 		query := fmt.Sprintf("DELETE FROM \"%s\" WHERE Id = '%s'", usersTable, id)
 		_, err := r.db.Exec(query)
 		if err != nil {
