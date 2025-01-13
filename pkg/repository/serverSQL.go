@@ -16,7 +16,12 @@ type Config struct {
 }
 
 const (
-	usersTable = "User"
+	usersTable      = "User"
+	categoriesTable = "Category"
+	itemsTable      = "Item"
+	tagsTable       = "Tag"
+	itemTagsTable   = "ItemTag"
+	orderMode       = "OrderMode"
 )
 
 func NewSQLServerDB(cfg Config) (*sqlx.DB, error) {

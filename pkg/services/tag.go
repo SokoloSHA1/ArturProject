@@ -1,6 +1,9 @@
 package services
 
-import "github.com/SokoloSHA/ArturProject/pkg/repository"
+import (
+	arturproject "github.com/SokoloSHA/ArturProject"
+	"github.com/SokoloSHA/ArturProject/pkg/repository"
+)
 
 type TagService struct {
 	repo repository.TodoTag
@@ -10,7 +13,7 @@ func NewTagService(repo repository.TodoTag) *TagService {
 	return &TagService{repo: repo}
 }
 
-func (s *TagService) DeleteTags(tags []string) error {
+func (s *TagService) DeleteTags(user arturproject.User, tags []string) error {
 	if len(tags) == 0 {
 		return nil
 	}

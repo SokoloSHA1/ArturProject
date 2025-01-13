@@ -12,12 +12,16 @@ type TodoUser interface {
 }
 
 type TodoCategory interface {
-	UpdateCategories(categories []arturproject.Category) error
-	DeleteCategories(cagories []string) error
+	UpdateCategories(category arturproject.Category) error
+	DeleteCategories(user arturproject.User, categories []string) error
+	CreateCategory(category arturproject.Category) error
+	CheckCategories(category arturproject.Category) (bool, error)
+	GetCategories(userId string) ([]arturproject.Category, error)
 }
 
 type TodoItem interface {
-	DeleteItems(items []string) error
+	DeleteItems(user arturproject.User, items []string) error
+	CreateItem(item arturproject.Item) error
 }
 
 type TodoTag interface {

@@ -13,15 +13,16 @@ type TodoUser interface {
 
 type TodoCategory interface {
 	UpdateCategories(categories []arturproject.Category) error
-	DeleteCategories(cagories []string) error
+	DeleteCategories(user arturproject.User, categories []string) error
+	GetCategories(userId string) ([]arturproject.Category, error)
 }
 
 type TodoItem interface {
-	DeleteItems(items []string) error
+	DeleteItems(user arturproject.User, items []string) error
 }
 
 type TodoTag interface {
-	DeleteTags(tags []string) error
+	DeleteTags(user arturproject.User, tags []string) error
 }
 
 type Service struct {

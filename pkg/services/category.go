@@ -18,13 +18,33 @@ func (s *CategoryService) UpdateCategories(categories []arturproject.Category) e
 		return nil
 	}
 
-	return s.repo.UpdateCategories(categories)
+	for _, category := range categories {
+		ok, err := s.repo.CheckCategories(category)
+		if err != nil {
+			return err
+		}
+
+		if !ok {
+			err = s.repo.CreateCategory(category)
+		} else {
+			err = s.repo.UpdateCategories(category)
+		}
+
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
-func (s *CategoryService) DeleteCategories(cagories []string) error {
-	if len(cagories) == 0 {
+func (s *CategoryService) DeleteCategories(user arturproject.User, categories []string) error {
+	if len(categories) == 0 {
 		return nil
 	}
 
-	return s.repo.DeleteCategories(cagories)
+	return s.repo.DeleteCategories(user, categories)
+}
+
+func (s *CategoryService) GetCategories(userId string) ([]arturproject.Category, error) {
+	return s.repo.GetCategories(userId)
 }
