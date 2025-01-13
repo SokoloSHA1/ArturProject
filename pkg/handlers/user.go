@@ -66,6 +66,12 @@ func (h *Handler) postUser(c *gin.Context) {
 		return
 	}
 
+	err = h.service.TodoItem.UpdateItems(input.UpdateItems)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
 	err = h.service.TodoCategory.DeleteCategories(input.User, input.DeleteCategories)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())

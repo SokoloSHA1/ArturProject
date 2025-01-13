@@ -20,3 +20,22 @@ func (s *ItemService) DeleteItems(user arturproject.User, items []string) error 
 
 	return s.repo.DeleteItems(user, items)
 }
+
+func (s *ItemService) UpdateItems(items []arturproject.Item) error {
+	if len(items) == 0 {
+		return nil
+	}
+
+	for _, item := range items {
+		ok, err := s.repo.CheckItems(item)
+		if err != nil {
+			return err
+		}
+
+		if !ok {
+			err = s.repo.CreateItem(item)
+		}
+	}
+
+	return nil
+}

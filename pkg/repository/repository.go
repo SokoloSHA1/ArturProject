@@ -21,6 +21,7 @@ type TodoCategory interface {
 
 type TodoItem interface {
 	DeleteItems(user arturproject.User, items []string) error
+	CheckItems(item arturproject.Item) (bool, error)
 	CreateItem(item arturproject.Item) error
 }
 

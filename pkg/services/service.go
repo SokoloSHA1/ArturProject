@@ -19,6 +19,7 @@ type TodoCategory interface {
 
 type TodoItem interface {
 	DeleteItems(user arturproject.User, items []string) error
+	UpdateItems(items []arturproject.Item) error
 }
 
 type TodoTag interface {
