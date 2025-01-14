@@ -84,11 +84,11 @@ func (h *Handler) postUser(c *gin.Context) {
 		return
 	}
 
-	// err = h.service.TodoTag.DeleteTags(input.User, input.DeleteTags)
-	// if err != nil {
-	// 	newErrorResponse(c, http.StatusInternalServerError, err.Error())
-	// 	return
-	// }
+	err = h.service.TodoTag.DeleteTags(input.User, input.DeleteTags)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
 
 	// err = h.service.TodoItemTag.DeleteItemTags(input.DeleteItemTags)
 	// if err != nil {
@@ -114,8 +114,14 @@ func (h *Handler) getData(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 	}
 
+	items, err := h.service.TodoItem.GetItems(id)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+	}
+
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"user":       user,
 		"categories": categories,
+		"items":      items,
 	})
 }

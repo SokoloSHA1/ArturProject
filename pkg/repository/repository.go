@@ -23,6 +23,8 @@ type TodoItem interface {
 	DeleteItems(user arturproject.User, items []string) error
 	CheckItems(item arturproject.Item) (bool, error)
 	CreateItem(item arturproject.Item) error
+	UpdateItem(item arturproject.Item) error
+	GetItems(userId string) ([]arturproject.Item, error)
 }
 
 type TodoTag interface {

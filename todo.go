@@ -16,7 +16,7 @@ type Item struct {
 	CategoryId  uuid.UUID
 	Title       string
 	Description string
-	Rating      float32
+	Rating      string
 	Rank        int
 	CreatedAt   string
 	UpdatedAt   string

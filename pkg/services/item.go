@@ -34,8 +34,18 @@ func (s *ItemService) UpdateItems(items []arturproject.Item) error {
 
 		if !ok {
 			err = s.repo.CreateItem(item)
+		} else {
+			err = s.repo.UpdateItem(item)
+		}
+
+		if err != nil {
+			return err
 		}
 	}
 
 	return nil
+}
+
+func (s *ItemService) GetItems(userId string) ([]arturproject.Item, error) {
+	return s.repo.GetItems(userId)
 }

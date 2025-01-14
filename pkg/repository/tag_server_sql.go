@@ -16,7 +16,7 @@ func NewTagServerSql(db *sqlx.DB) *TagServerSql {
 
 func (r *TagServerSql) DeleteTags(tags []string) error {
 	for _, id := range tags {
-		query := fmt.Sprintf("DELETE FROM \"%s\" WHERE Id = '%s'", usersTable, id)
+		query := fmt.Sprintf("DELETE FROM \"%s\" WHERE Id = '%s'", tagsTable, id)
 		_, err := r.db.Exec(query)
 		if err != nil {
 			return err
