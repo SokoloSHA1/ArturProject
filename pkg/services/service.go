@@ -18,13 +18,21 @@ type TodoCategory interface {
 }
 
 type TodoItem interface {
-	DeleteItems(user arturproject.User, items []string) error
+	DeleteItems(items []string) error
 	UpdateItems(items []arturproject.Item) error
-	GetItems(userId string) ([]arturproject.Item, error)
+	GetItems(categories []arturproject.Category) ([]arturproject.Item, error)
 }
 
 type TodoTag interface {
-	DeleteTags(user arturproject.User, tags []string) error
+	DeleteTags(tags []string) error
+	UpdateTags(tags []arturproject.Tag) error
+	GetTags(categories []arturproject.Category) ([]arturproject.Tag, error)
+}
+
+type TodoItemTag interface {
+	DeleteItemTags(itemTags []string) error
+	UpdateItemTags(itemTags []arturproject.ItemTag) error
+	GetItemTags(items []arturproject.Item) ([]arturproject.ItemTag, error)
 }
 
 type Service struct {
@@ -32,6 +40,7 @@ type Service struct {
 	TodoCategory
 	TodoItem
 	TodoTag
+	TodoItemTag
 }
 
 func NewService(repos *repository.Repository) *Service {
@@ -40,5 +49,6 @@ func NewService(repos *repository.Repository) *Service {
 		TodoCategory: NewCategoryService(repos.TodoCategory),
 		TodoItem:     NewItemService(repos.TodoItem),
 		TodoTag:      NewTagService(repos.TodoTag),
+		TodoItemTag:  NewItemTagService(repos.TodoItemTag),
 	}
 }

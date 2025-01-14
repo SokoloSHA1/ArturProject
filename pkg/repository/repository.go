@@ -20,15 +20,25 @@ type TodoCategory interface {
 }
 
 type TodoItem interface {
-	DeleteItems(user arturproject.User, items []string) error
+	DeleteItems(items []string) error
 	CheckItems(item arturproject.Item) (bool, error)
 	CreateItem(item arturproject.Item) error
 	UpdateItem(item arturproject.Item) error
-	GetItems(userId string) ([]arturproject.Item, error)
+	GetItems(categories []arturproject.Category) ([]arturproject.Item, error)
 }
 
 type TodoTag interface {
 	DeleteTags(tags []string) error
+	CheckTags(tag arturproject.Tag) (bool, error)
+	CreateTag(tag arturproject.Tag) error
+	UpdateTag(tag arturproject.Tag) error
+	GetTags(categories []arturproject.Category) ([]arturproject.Tag, error)
+}
+
+type TodoItemTag interface {
+	DeleteItemTags(itemTags []string) error
+	CreateItemTags(itemTags []arturproject.ItemTag) error
+	GetItemTags(items []arturproject.Item) ([]arturproject.ItemTag, error)
 }
 
 type Repository struct {
@@ -36,6 +46,7 @@ type Repository struct {
 	TodoCategory
 	TodoItem
 	TodoTag
+	TodoItemTag
 }
 
 func NewRepository(db *sqlx.DB) *Repository {
@@ -44,5 +55,6 @@ func NewRepository(db *sqlx.DB) *Repository {
 		TodoCategory: NewCategoryServerSql(db),
 		TodoItem:     NewItemServerSql(db),
 		TodoTag:      NewTagServerSql(db),
+		TodoItemTag:  NewItemTagServerSql(db),
 	}
 }

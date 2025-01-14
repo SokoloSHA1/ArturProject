@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	arturproject "github.com/SokoloSHA/ArturProject"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 )
@@ -10,7 +11,11 @@ type errorResponse struct {
 }
 
 type statusResponse struct {
-	Status string `json:"status"`
+	User       arturproject.User       `json:"user"`
+	Categories []arturproject.Category `json:"categories"`
+	Items      []arturproject.Item     `json:"items"`
+	ItemTags   []arturproject.ItemTag  `json:"itemTags"`
+	Tags       []arturproject.Tag      `json:"tags"`
 }
 
 func newErrorResponse(c *gin.Context, statusCode int, message string) {

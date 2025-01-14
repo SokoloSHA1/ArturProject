@@ -13,12 +13,12 @@ func NewItemService(repo repository.TodoItem) *ItemService {
 	return &ItemService{repo: repo}
 }
 
-func (s *ItemService) DeleteItems(user arturproject.User, items []string) error {
+func (s *ItemService) DeleteItems(items []string) error {
 	if len(items) == 0 {
 		return nil
 	}
 
-	return s.repo.DeleteItems(user, items)
+	return s.repo.DeleteItems(items)
 }
 
 func (s *ItemService) UpdateItems(items []arturproject.Item) error {
@@ -46,6 +46,6 @@ func (s *ItemService) UpdateItems(items []arturproject.Item) error {
 	return nil
 }
 
-func (s *ItemService) GetItems(userId string) ([]arturproject.Item, error) {
-	return s.repo.GetItems(userId)
+func (s *ItemService) GetItems(categories []arturproject.Category) ([]arturproject.Item, error) {
+	return s.repo.GetItems(categories)
 }

@@ -17,10 +17,19 @@ func NewItemServerSql(db *sqlx.DB) *ItemServerSql {
 	return &ItemServerSql{db: db}
 }
 
-func (r *ItemServerSql) DeleteItems(user arturproject.User, items []string) error {
+func (r *ItemServerSql) DeleteItems(items []string) error {
 	for _, id := range items {
-		query := fmt.Sprintf("DELETE FROM \"%s\" WHERE Id = '%s'", itemsTable, id)
+		query := fmt.Sprintf("DELETE FROM \"%s\" WHERE ItemId = '%s'", itemTagsTable, id)
+
 		_, err := r.db.Exec(query)
+		if err != nil {
+			return err
+		}
+
+		query = fmt.Sprintf("DELETE FROM \"%s\" WHERE Id = '%s'",
+			itemsTable, id)
+
+		_, err = r.db.Exec(query)
 		if err != nil {
 			return err
 		}
@@ -75,16 +84,28 @@ func (r *ItemServerSql) UpdateItem(item arturproject.Item) error {
 
 	setQuery := strings.Join(setValues, ", ")
 	query := fmt.Sprintf("UPDATE \"%s\" SET %s WHERE Id = '%s' AND CategoryId = '%s'",
-		categoriesTable, setQuery, item.Id, item.CategoryId)
+		itemsTable, setQuery, item.Id, item.CategoryId)
 
 	_, err := r.db.Exec(query)
 
 	return err
 }
 
-func (r *ItemServerSql) GetItems(userId string) ([]arturproject.Item, error) {
-	var items []arturproject.Item
-	query := fmt.Sprintf("SELECT * FROM \"%s\" it INNER JOIN \"%s\" ct ON it.CategoryId = ct.UserId = '%s'", itemsTable, categoriesTable, userId)
-	err := r.db.Select(&items, query)
-	return items, err
+func (r *ItemServerSql) GetItems(categories []arturproject.Category) ([]arturproject.Item, error) {
+	var allItems []arturproject.Item
+
+	for _, category := range categories {
+		var categoryItems []arturproject.Item
+
+		query := fmt.Sprintf("SELECT * FROM \"%s\" WHERE CategoryId = '%s'", itemsTable, category.Id)
+		err := r.db.Select(&categoryItems, query)
+		if err != nil {
+			return nil, err
+		}
+
+		allItems = append(allItems, categoryItems...)
+	}
+
+	return allItems, nil
+
 }

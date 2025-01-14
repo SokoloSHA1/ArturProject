@@ -72,29 +72,42 @@ func (h *Handler) postUser(c *gin.Context) {
 		return
 	}
 
+	err = h.service.TodoTag.UpdateTags(input.UpdateTags)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	err = h.service.TodoItemTag.UpdateItemTags(input.UpdateItemTags)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
 	err = h.service.TodoCategory.DeleteCategories(input.User, input.DeleteCategories)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	err = h.service.TodoItem.DeleteItems(input.User, input.DeleteItems)
+	err = h.service.TodoItem.DeleteItems(input.DeleteItems)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	err = h.service.TodoTag.DeleteTags(input.User, input.DeleteTags)
+	err = h.service.TodoTag.DeleteTags(input.DeleteTags)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	// err = h.service.TodoItemTag.DeleteItemTags(input.DeleteItemTags)
-	// if err != nil {
-	// 	newErrorResponse(c, http.StatusInternalServerError, err.Error())
-	// 	return
-	// }
+	err = h.service.TodoItemTag.DeleteItemTags(input.DeleteItemTags)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"Status": "ok",
 	})
@@ -114,14 +127,26 @@ func (h *Handler) getData(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 	}
 
-	items, err := h.service.TodoItem.GetItems(id)
+	items, err := h.service.TodoItem.GetItems(categories)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 	}
 
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"user":       user,
-		"categories": categories,
-		"items":      items,
+	tags, err := h.service.TodoTag.GetTags(categories)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+	}
+
+	itemTags, err := h.service.GetItemTags(items)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+	}
+
+	c.JSON(http.StatusOK, statusResponse{
+		User:       user,
+		Categories: categories,
+		Items:      items,
+		Tags:       tags,
+		ItemTags:   itemTags,
 	})
 }

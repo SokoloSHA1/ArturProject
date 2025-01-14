@@ -1,40 +1,42 @@
 package arturproject
 
-import "github.com/google/uuid"
+import (
+	mssql "github.com/microsoft/go-mssqldb"
+)
 
 type Category struct {
-	Id        uuid.UUID `json:"id" db:"Id"`
-	UserId    uuid.UUID `json:"userId" db:"UserId"`
-	Title     string    `json:"title" db:"Title"`
-	OrderMode int       `json:"orderMode" db:"OrderMode"`
-	CreatedAt string    `json:"createdAt" db:"CreatedAt"`
-	UpdatedAt string    `json:"updatedAt" db:"UpdatedAt"`
+	Id        mssql.UniqueIdentifier `json:"id" db:"Id"`
+	UserId    mssql.UniqueIdentifier `json:"userId" db:"UserId"`
+	Title     string                 `json:"title" db:"Title"`
+	OrderMode int                    `json:"orderMode" db:"OrderMode"`
+	CreatedAt string                 `json:"createdAt" db:"CreatedAt"`
+	UpdatedAt string                 `json:"updatedAt" db:"UpdatedAt"`
 }
 
 type Item struct {
-	Id          uuid.UUID
-	CategoryId  uuid.UUID
-	Title       string
-	Description string
-	Rating      string
-	Rank        int
-	CreatedAt   string
-	UpdatedAt   string
+	Id          mssql.UniqueIdentifier `json:"id" db:"Id"`
+	CategoryId  mssql.UniqueIdentifier `json:"CategoryId" db:"CategoryId"`
+	Title       string                 `json:"Title" db:"Title"`
+	Description string                 `json:"Description" db:"Description"`
+	Rating      string                 `json:"Rating" db:"Rating"`
+	Rank        int                    `json:"Rank" db:"Rank"`
+	CreatedAt   string                 `json:"CreatedAt" db:"CreatedAt"`
+	UpdatedAt   string                 `json:"UpdatedAt" db:"UpdatedAt"`
 }
 
 type Tag struct {
-	Id         uuid.UUID
-	CategoryId uuid.UUID
-	Title      string
-	CreatedAt  string
-	UpdatedAt  string
+	Id         mssql.UniqueIdentifier `json:"id" db:"Id"`
+	CategoryId mssql.UniqueIdentifier `json:"CategoryId" db:"CategoryId"`
+	Title      string                 `json:"Title" db:"Title"`
+	CreatedAt  string                 `json:"CreatedAt" db:"CreatedAt"`
+	UpdatedAt  string                 `json:"UpdatedAt" db:"UpdatedAt"`
 }
 
 type ItemTag struct {
-	Id        string
-	ItemId    uuid.UUID
-	TagId     uuid.UUID
-	CreatedAt string
+	Id        mssql.UniqueIdentifier `json:"id" db:"Id"`
+	ItemId    mssql.UniqueIdentifier `json:"ItemId" db:"ItemId"`
+	TagId     mssql.UniqueIdentifier `json:"TagId" db:"TagId"`
+	CreatedAt string                 `json:"CreatedAt" db:"CreatedAt"`
 }
 
 type OrderMode struct {
@@ -45,11 +47,11 @@ type OrderMode struct {
 type Params struct {
 	User             User       `json:"user"`
 	UpdateCategories []Category `json:"updatedCategories"`
-	UpdateItems      []Item     `json:"updatedItem"`
-	UpdateItemTags   []ItemTag
-	UpdateTags       []Tag
-	DeleteCategories []string `json:"deletedCategories"`
-	DeleteItems      []string
-	DeleteItemTags   []string
-	DeleteTags       []string
+	UpdateItems      []Item     `json:"updatedItems"`
+	UpdateItemTags   []ItemTag  `json:"updatedItemTags"`
+	UpdateTags       []Tag      `json:"updatedTags"`
+	DeleteCategories []string   `json:"deletedCategories"`
+	DeleteItems      []string   `json:"deletedItems"`
+	DeleteItemTags   []string   `json:"deletedItemTags"`
+	DeleteTags       []string   `json:"deletedTags"`
 }
